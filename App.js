@@ -8,40 +8,25 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
+import Item from "./components/Item";
+import ItemInput from "./components/ItemInput";
 
 export default function App() {
-  const [item, setItem] = useState("");
   const [items, setItems] = useState([]);
 
-  const inputHandler = (text) => {
-    setItem(text);
-  };
-
-  const addItemHandler = () => {
+  const addItemHandler = (itemFOC) => {
     setItems((currentItems) => [
       ...currentItems,
-      { key: Math.random().toString(), value: item },
+      { key: Math.random().toString(), value: itemFOC },
     ]); //currentItem is for RN to always use the latest state snapshot / key gives FlatList unique keys / item is now an object
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.inputCon}>
-        <TextInput
-          placeholder="Item"
-          style={styles.textInput}
-          onChangeText={inputHandler}
-          value={item}
-        />
-        <Button title="AdDd" onPress={addItemHandler} />
-      </View>
+      <ItemInput onAddItem={addItemHandler} />
       <FlatList
         data={items}
-        renderItem={(itemData) => (
-          <View style={styles.listItem}>
-            <Text>{itemData.item.value}</Text>
-          </View>
-        )}
+        renderItem={(itemData) => <Item itemName={itemData.item.value} />}
       />
     </View>
   );
@@ -50,23 +35,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     padding: 50,
-  },
-  inputCon: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  textInput: {
-    width: "80%",
-    borderColor: "black",
-    borderWidth: 1,
-    padding: 10,
-  },
-  listItem: {
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: "#ccc",
-    borderColor: "black",
-    borderWidth: 1,
   },
 });
