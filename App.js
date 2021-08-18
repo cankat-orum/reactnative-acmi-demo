@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import Item from "./components/Item";
 import ItemInput from "./components/ItemInput";
 
@@ -21,12 +13,24 @@ export default function App() {
     ]); //currentItem is for RN to always use the latest state snapshot / key gives FlatList unique keys / item is now an object
   };
 
+  const removeItemHandler = (itemId) => {
+    setItems((items) => {
+      return items.filter((item) => item.key !== itemId);
+    });
+  };
+
   return (
     <View style={styles.screen}>
       <ItemInput onAddItem={addItemHandler} />
       <FlatList
         data={items}
-        renderItem={(itemData) => <Item itemName={itemData.item.value} />}
+        renderItem={(itemData) => (
+          <Item
+            itemID={itemData.item.key}
+            onDelete={removeItemHandler}
+            itemName={itemData.item.value}
+          />
+        )}
       />
     </View>
   );

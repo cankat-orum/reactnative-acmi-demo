@@ -21,7 +21,7 @@ const ItemInput = (props) => {
         onPress={props.onAddItem.bind(
           this,
           item
-        )} /* binding arg to func so it'll eventually be used when func called */
+        )} /* binding param to func so it'll eventually be used when func called */
       />
     </View>
   );
