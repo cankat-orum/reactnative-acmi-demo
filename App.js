@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Button } from "react-native";
 import Item from "./components/Item";
 import ItemInput from "./components/ItemInput";
 
 export default function App() {
   const [items, setItems] = useState([]);
+  const [isAddMode, setIsAddMode] = useState(false);
 
   const addItemHandler = (itemFOC) => {
     setItems((currentItems) => [
       ...currentItems,
       { key: Math.random().toString(), value: itemFOC },
     ]); //currentItem is for RN to always use the latest state snapshot / key gives FlatList unique keys / item is now an object
+    setIsAddMode(false);
   };
 
   const removeItemHandler = (itemId) => {
@@ -19,9 +21,18 @@ export default function App() {
     });
   };
 
+  const cancelHandler = () => {
+    setIsAddMode(false);
+  };
+
   return (
     <View style={styles.screen}>
-      <ItemInput onAddItem={addItemHandler} />
+      <Button title="Add Item" onPress={() => setIsAddMode(true)} />
+      <ItemInput
+        visible={isAddMode}
+        onAddItem={addItemHandler}
+        onCancel={cancelHandler}
+      />
       <FlatList
         data={items}
         renderItem={(itemData) => (
